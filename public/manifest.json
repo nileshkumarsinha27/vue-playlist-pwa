@@ -1,6 +1,6 @@
 {
   "name": "my-playlist",
-  "short_name": "my-playlist",
+  "short_name": "mylist",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",
@@ -13,8 +13,8 @@
       "type": "image/png"
     }
   ],
-  "start_url": "./",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#000000",
+  "background_color": "#2c3e50",
   "theme_color": "#4DBA87"
 }
