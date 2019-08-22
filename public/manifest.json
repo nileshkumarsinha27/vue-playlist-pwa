@@ -1,6 +1,6 @@
 {
-  "name": "vue-pwa",
-  "short_name": "vue-pwa",
+  "name": "my-playlist",
+  "short_name": "my-playlist",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",
