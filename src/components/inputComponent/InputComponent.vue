@@ -1,5 +1,9 @@
 <template>
-  <form class="link-form" @submit="submitHandler" :autocomplete="autoCompleteStatus">
+  <form
+    class="link-form"
+    @submit="submitHandler"
+    :autocomplete="autoCompleteStatus"
+  >
     <label :for="inputName">
       <input
         :name="inputName"

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-container" v-if="queue.length>0">
+  <div class="flex-container" v-if="queue.length > 0">
     <div>
       <YoutubeIframe />
     </div>

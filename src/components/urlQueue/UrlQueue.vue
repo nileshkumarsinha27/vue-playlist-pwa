@@ -1,18 +1,39 @@
 <template>
   <div>
-    <p>{{playListText}}</p>
-    <ul v-if="queue.length>0">
+    <p>{{ playListText }}</p>
+    <ul v-if="queue.length > 0">
       <li
-        v-for="(item,index) in queue"
+        v-for="(item, index) in queue"
         :key="index"
-        :draggable="queue.length>1 && isDraggable"
+        :draggable="queue.length > 1 && isDraggable"
         @drop="handleDrop"
         @dragover="handleDragOver"
-        @dragstart="()=>{handleDragStart(item)}"
+        @dragstart="
+          () => {
+            handleDragStart(item);
+          }
+        "
         :data-index="index"
       >
-        <span role="button" @click="()=>{playVideo(item)}">{{item.value}}</span>
-        <img :src="deleteIcon" :alt="imageAlt" :title="imageAlt" @click="()=>{handleDelete(item)}" />
+        <span
+          role="button"
+          @click="
+            () => {
+              playVideo(item);
+            }
+          "
+          >{{ item.value }}</span
+        >
+        <img
+          :src="deleteIcon"
+          :alt="imageAlt"
+          :title="imageAlt"
+          @click="
+            () => {
+              handleDelete(item);
+            }
+          "
+        />
       </li>
     </ul>
   </div>
@@ -127,9 +148,9 @@ ul {
     }
   }
   p {
-  font-size: 12px;
-  margin: 0;
-  width: 100%;
-}
+    font-size: 12px;
+    margin: 0;
+    width: 100%;
+  }
 }
 </style>
