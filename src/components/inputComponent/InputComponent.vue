@@ -4,14 +4,13 @@
     @submit="submitHandler"
     :autocomplete="autoCompleteStatus"
   >
-    <label :for="inputName">
-      <input
-        :name="inputName"
-        :placeholder="placeHolder"
-        v-model="inputValue"
-        @keyup="handleChange"
-      />
-    </label>
+    <label :for="inputName" class="hide">{{ labelText }}</label>
+    <input
+      :name="inputName"
+      :placeholder="placeHolder"
+      v-model="inputValue"
+      @keyup="handleChange"
+    />
   </form>
 </template>
 <script>
@@ -27,7 +26,8 @@ export default {
     placeHolder: CONSTANTS.INPUT_COMPONENT.PLACEHOLDER,
     inputValue: "",
     youtubeRegex: CONSTANTS.INPUT_COMPONENT.YOUTUBE_REGEX,
-    autoCompleteStatus: CONSTANTS.INPUT_COMPONENT.AUTO_COMPLETE_STATUS
+    autoCompleteStatus: CONSTANTS.INPUT_COMPONENT.AUTO_COMPLETE_STATUS,
+    labelText: CONSTANTS.INPUT_COMPONENT.LABEL_TEXT
   }),
   methods: {
     validateUrl: function() {
@@ -85,6 +85,9 @@ export default {
       color: grey;
     }
   }
+}
+.hide {
+  display: none;
 }
 @media (max-width: 1024px) {
   .link-form {

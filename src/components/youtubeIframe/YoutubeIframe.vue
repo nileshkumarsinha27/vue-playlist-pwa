@@ -39,7 +39,7 @@ export default {
           this.player.destroy();
           this.player = null;
         }
-        this.player = new YT.Player(this.frameId, {
+        this.player = new window.YT.Player(this.frameId, {
           width: _this.width,
           height: _this.height,
           videoId: src,
