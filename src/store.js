@@ -1,49 +1,75 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import getVideoId from "@/utils/utils.js";
-import ACTIONS from "@/actions.js";
-import MUTATIONS from "@/mutations.js";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import ACTIONS from '@/actions.constants';
+import MUTATIONS from '@/mutations.constants';
+import CONSTANTS from '@/constants.js';
+import { getValues, getTimeFromMoment } from '@/utils';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    videoQueue: [],
-    videoSrc: ""
+    weightData: [],
+    loggedInUser: {},
+    showBurger: false,
+    isDataLoaded: false,
+    navRoute: CONSTANTS.ROUTES.DEFAULT
   },
   getters: {
-    getQueue: state => state.videoQueue,
-    getVideoSource: state => state.videoSrc
+    weightDataGetter: state =>
+      state.weightData.sort((a, b) =>
+        a.date > b.date ? 1 : b.date > a.date ? -1 : 0
+      ),
+    totalPagesPagination: state =>
+      Math.ceil(state.weightData.length / CONSTANTS.PAGINATION_COUNT),
+    chartYAxisValues: state =>
+      getValues(state.weightData, CONSTANTS.DATA_KEYS.WEIGHT).map(elem =>
+        Number(elem)
+      ),
+    chartXAxisValues: state =>
+      getValues(state.weightData, CONSTANTS.DATA_KEYS.DATE).map(elem =>
+        getTimeFromMoment(elem)
+      ),
+    getUserDetails: state => state.loggedInUser,
+    showBurger: state => state.showBurger,
+    showLoader: state => state.isDataLoaded,
+    selectedRoute: state => state.navRoute
   },
   mutations: {
-    [MUTATIONS.PLAYER.ADD_TO_QUEUE_MUTATION]: function(state, payload) {
-      state.videoQueue = [...payload];
-      state.videoSrc = state.videoQueue[0].value
-        ? getVideoId(state.videoQueue[0].value)
-        : "";
+    [MUTATIONS.UPLOAD_DATA.UPLOAD_SUBMIT_MUTATION]: (state, payload) => {
+      state.weightData = [...payload];
     },
-    [MUTATIONS.URL_LIST.MODIFY_LIST_MUTATION]: function(state, payload) {
-      state.videoQueue = [...payload];
-      state.videoSrc = state.videoQueue[0].value
-        ? getVideoId(state.videoQueue[0].value)
-        : "";
+    [MUTATIONS.LOGIN.GET_USER_DETAILS_MUTATION]: (state, payload) => {
+      state.loggedInUser = { ...payload };
+      state.weightData = payload.weightData ? [...payload.weightData] : [];
+      state.isDataLoaded = true;
     },
-    [MUTATIONS.PLAYER.UPDATE_QUEUE_MUTATION]: function(state) {
-      state.videoQueue.shift();
-      state.videoSrc = state.videoQueue[0].value
-        ? getVideoId(state.videoQueue[0].value)
-        : "";
+    [MUTATIONS.HEADER.TOGGLE_MENU_MUTATION]: state => {
+      state.showBurger = !state.showBurger;
+    },
+    [MUTATIONS.LOGIN.CLEAR_STORE_DATA_MUTATION]: state => {
+      state.loggedInUser = Object.assign({});
+      state.weightData = [];
+    },
+    [MUTATIONS.NAVBAR.SET_NAV_ROUTE_MUTATION]: (state, payload) => {
+      state.navRoute = payload;
     }
   },
   actions: {
-    [ACTIONS.PLAYER.ADD_TO_QUEUE]: function({ commit }, payload) {
-      commit(MUTATIONS.PLAYER.ADD_TO_QUEUE_MUTATION, payload);
+    [ACTIONS.UPLOAD_DATA.UPLOAD_SUBMIT]: ({ commit }, payload) => {
+      commit(MUTATIONS.UPLOAD_DATA.UPLOAD_SUBMIT_MUTATION, payload);
     },
-    [ACTIONS.URL_LIST.MODIFY_LIST]: function({ commit }, payload) {
-      commit(MUTATIONS.URL_LIST.MODIFY_LIST_MUTATION, payload);
+    [ACTIONS.LOGIN.GET_USER_DETAILS]: ({ commit }, payload) => {
+      commit(MUTATIONS.LOGIN.GET_USER_DETAILS_MUTATION, payload);
     },
-    [ACTIONS.PLAYER.UPDATE_QUEUE]: function({ commit }) {
-      commit(MUTATIONS.PLAYER.UPDATE_QUEUE_MUTATION);
+    [ACTIONS.HEADER.TOGGLE_MENU]: ({ commit }) => {
+      commit(MUTATIONS.HEADER.TOGGLE_MENU_MUTATION);
+    },
+    [ACTIONS.LOGIN.CLEAR_STORE_DATA]: ({ commit }) => {
+      commit(MUTATIONS.LOGIN.CLEAR_STORE_DATA_MUTATION);
+    },
+    [ACTIONS.NAVBAR.SET_NAV_ROUTE]: ({ commit }, payload) => {
+      commit(MUTATIONS.NAVBAR.SET_NAV_ROUTE_MUTATION, payload);
     }
   }
 });
